@@ -33,7 +33,8 @@ COPY --from=builder /bundle /opt/gemini-cli
 # node binary is on PATH (required by gemini's shebang).
 RUN mv /opt/gemini-cli/bin/gemini /opt/gemini-cli/bin/gemini-bin && \
     printf '#!/bin/sh\n\
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"\n\
+REAL_PATH="$(readlink -f "$0" 2>/dev/null || echo "$0")"\n\
+SCRIPT_DIR="$(cd "$(dirname "$REAL_PATH")" && pwd)"\n\
 export PATH="$SCRIPT_DIR:$PATH"\n\
 GEMINI_TMP_HOME="/tmp/gemini-home"\n\
 if [ ! -w "$HOME" ]; then\n\
