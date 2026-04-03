@@ -30,7 +30,18 @@ RUN set -e && \
 # Stage 2: Minimal runtime image
 FROM registry.access.redhat.com/ubi10/ubi-minimal:10.0
 
-COPY --from=builder /usr/local/bin/opencode /usr/local/bin/opencode
+COPY --from=builder /usr/local/bin/opencode /usr/local/bin/opencode-bin
+
+# Wrapper script: redirect XDG dirs to writable locations for OpenShift arbitrary UIDs
+RUN printf '#!/bin/sh\n\
+OC_HOME="/tmp/opencode-home"\n\
+mkdir -p "$OC_HOME/.config" "$OC_HOME/.local/share" "$OC_HOME/.local/state" "$OC_HOME/.cache"\n\
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$OC_HOME/.config}"\n\
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$OC_HOME/.local/share}"\n\
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$OC_HOME/.local/state}"\n\
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$OC_HOME/.cache}"\n\
+exec /usr/local/bin/opencode-bin "$@"\n' > /usr/local/bin/opencode && \
+    chmod +x /usr/local/bin/opencode
 
 LABEL org.opencontainers.image.description="Opencode CLI tool for DevWorkspace injection" \
       org.opencontainers.image.source="https://github.com/olexii4/che-ai-tool-images"
