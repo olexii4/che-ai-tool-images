@@ -28,5 +28,21 @@ FROM registry.access.redhat.com/ubi10/ubi-minimal:10.0
 
 COPY --from=builder /bundle /opt/gemini-cli
 
+# Rename the original gemini symlink and add a wrapper that sets HOME to a
+# writable location for OpenShift arbitrary UIDs, and ensures the bundled
+# node binary is on PATH (required by gemini's shebang).
+RUN mv /opt/gemini-cli/bin/gemini /opt/gemini-cli/bin/gemini-bin && \
+    printf '#!/bin/sh\n\
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"\n\
+export PATH="$SCRIPT_DIR:$PATH"\n\
+GEMINI_TMP_HOME="/tmp/gemini-home"\n\
+if [ ! -w "$HOME" ]; then\n\
+  export HOME="$GEMINI_TMP_HOME"\n\
+fi\n\
+mkdir -p "$HOME/.gemini"\n\
+test -f "$HOME/.gemini/projects.json" || echo '\''{"projects":{}}'\'' > "$HOME/.gemini/projects.json"\n\
+exec "$SCRIPT_DIR/gemini-bin" "$@"\n' > /opt/gemini-cli/bin/gemini && \
+    chmod +x /opt/gemini-cli/bin/gemini
+
 LABEL org.opencontainers.image.description="Gemini CLI init container for DevWorkspace injection" \
       org.opencontainers.image.source="https://github.com/olexii4/che-ai-tool-images"
