@@ -28,7 +28,19 @@ RUN set -e && \
 # Stage 2: Minimal runtime image
 FROM registry.access.redhat.com/ubi10/ubi-minimal:10.0
 
-COPY --from=builder /usr/local/bin/claude /usr/local/bin/claude
+COPY --from=builder /usr/local/bin/claude /usr/local/bin/claude-bin
+
+# Wrapper script that redirects HOME and config dirs to a writable location
+# for OpenShift arbitrary UIDs where $HOME is not writable.
+RUN printf '#!/bin/sh\n\
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"\n\
+CLAUDE_TMP_HOME="/tmp/claude-home"\n\
+if [ ! -w "$HOME" ]; then\n\
+  export HOME="$CLAUDE_TMP_HOME"\n\
+fi\n\
+mkdir -p "$HOME/.claude"\n\
+exec "$SCRIPT_DIR/claude-bin" "$@"\n' > /usr/local/bin/claude && \
+    chmod +x /usr/local/bin/claude
 
 LABEL org.opencontainers.image.description="Claude Code CLI tool for DevWorkspace injection" \
       org.opencontainers.image.source="https://github.com/olexii4/che-ai-tool-images"
