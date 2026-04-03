@@ -1,0 +1,61 @@
+{
+  "providers": [
+    {
+      "id": "google/gemini",
+      "name": "Gemini",
+      "publisher": "Google",
+      "description": "Google Gemini AI assistant for the terminal — chat, code generation, and agentic workflows.",
+      "docsUrl": "https://ai.google.dev/gemini-api/docs/quickstart",
+      "icon": "https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/geminicli.svg"
+    },
+    {
+      "id": "anthropic/claude",
+      "name": "Claude",
+      "publisher": "Anthropic",
+      "description": "Anthropic Claude AI coding assistant for terminal — autonomous coding, debugging, and codebase exploration.",
+      "docsUrl": "https://docs.anthropic.com/claude/reference/getting-started-with-the-api",
+      "icon": "https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/claudecode-color.svg"
+    },
+    {
+      "id": "opencodeai/opencode",
+      "name": "OpenCode",
+      "publisher": "opencode.ai",
+      "description": "Open-source terminal AI coding agent supporting 75+ LLM providers including Claude, GPT, Gemini, and local models.",
+      "docsUrl": "https://opencode.ai",
+      "icon": "https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/opencode.svg"
+    }
+  ],
+  "tools": [
+    {
+      "providerId": "anthropic/claude",
+      "tag": "next",
+      "name": "Claude Code",
+      "url": "https://claude.ai/code",
+      "binary": "claude",
+      "pattern": "init",
+      "injectorImage": "quay.io/oorel/claude-code:next",
+      "envVarName": "ANTHROPIC_API_KEY"
+    },
+    {
+      "providerId": "google/gemini",
+      "tag": "next",
+      "name": "Gemini CLI",
+      "url": "https://github.com/google-gemini/gemini-cli",
+      "binary": "gemini",
+      "pattern": "bundle",
+      "injectorImage": "quay.io/oorel/gemini-cli:next",
+      "envVarName": "GEMINI_API_KEY",
+      "setupCommand": "mkdir -p \"$HOME/.gemini\" && test -f \"$HOME/.gemini/projects.json\" || echo '{\"projects\":{}}' > \"$HOME/.gemini/projects.json\""
+    },
+    {
+      "providerId": "opencodeai/opencode",
+      "tag": "next",
+      "name": "OpenCode",
+      "url": "https://opencode.ai",
+      "binary": "opencode",
+      "pattern": "init",
+      "injectorImage": "quay.io/oorel/opencode:next",
+      "envVarName": "GOOGLE_GENERATIVE_AI_API_KEY"
+    }
+  ]
+}
