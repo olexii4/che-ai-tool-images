@@ -134,6 +134,91 @@ dockerfiles/
 
 ---
 
+## Patching Eclipse Che with AI Tools
+
+The dashboard reads AI tool definitions from a Kubernetes ConfigMap at runtime. You can add, update, or remove tools by managing this ConfigMap.
+
+### Prerequisites
+
+- `oc` CLI authenticated to your cluster
+- Eclipse Che installed (namespace defaults to `eclipse-che`)
+
+### Adding tools from registry.json
+
+Create a ConfigMap from the `registry.json` file in this repository:
+
+```bash
+# Set your Che namespace
+NS="${CHE_NAMESPACE:-eclipse-che}"
+
+# Create (or replace) the AI tool registry ConfigMap
+oc create configmap ai-tool-registry \
+  --from-file=registry.json=registry.json \
+  -n "$NS" \
+  --dry-run=client -o yaml | \
+  oc label --local -f - \
+    app.kubernetes.io/component=ai-tool-registry \
+    app.kubernetes.io/part-of=che.eclipse.org \
+    -o yaml | \
+  oc apply -f -
+```
+
+The dashboard backend picks up the ConfigMap automatically — no restart needed; the registry is read on each request.
+
+### Customizing the registry
+
+Edit `registry.json` before applying. For example, to offer only Claude Code:
+
+```json
+{
+  "providers": [
+    {
+      "id": "anthropic/claude",
+      "name": "Claude",
+      "publisher": "Anthropic"
+    }
+  ],
+  "tools": [
+    {
+      "providerId": "anthropic/claude",
+      "tag": "next",
+      "name": "Claude Code",
+      "url": "https://claude.ai/code",
+      "binary": "claude",
+      "pattern": "init",
+      "injectorImage": "quay.io/oorel/claude-code:next",
+      "envVarName": "ANTHROPIC_API_KEY"
+    }
+  ],
+  "defaultAiProviders": ["anthropic/claude"]
+}
+```
+
+### Removing all tools
+
+Delete the ConfigMap to hide all AI widgets from the dashboard:
+
+```bash
+oc delete configmap ai-tool-registry -n "${CHE_NAMESPACE:-eclipse-che}"
+```
+
+When no ConfigMap is found, the dashboard returns an empty registry and all AI-related UI elements (AI Provider Selector on Create Workspace page, AI Provider(s) column in the Workspaces list, and AI Providers Keys tab in User Preferences) are hidden automatically.
+
+### Verifying
+
+Check the current registry served by the dashboard:
+
+```bash
+# Get the Che route
+CHE_HOST=$(oc get route che -n "${CHE_NAMESPACE:-eclipse-che}" -o jsonpath='{.spec.host}')
+
+# Fetch the registry (requires a valid auth token)
+curl -sk "https://$CHE_HOST/dashboard/api/ai-registry" \
+  -H "Authorization: Bearer $(oc whoami -t)" | jq .
+```
+
+---
+
 ## License
 
 EPL-2.0 — see [LICENSE](LICENSE).

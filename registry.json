@@ -57,5 +57,6 @@
       "injectorImage": "quay.io/oorel/opencode:next",
       "envVarName": "GOOGLE_GENERATIVE_AI_API_KEY"
     }
-  ]
+  ],
+  "defaultAiProviders": ["google/gemini"]
 }
