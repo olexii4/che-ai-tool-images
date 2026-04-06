@@ -2,6 +2,12 @@
 
 UBI10-based init container images that inject AI CLI tools into Eclipse Che DevWorkspaces.
 
+## Background
+
+The original idea of injecting CLI tools into DevWorkspaces via init containers comes from [akurinnoy/tools-injector](https://github.com/akurinnoy/tools-injector.git). The Dockerfiles in this repository are simplified and modified versions of that approach, adapted to work with the [che-dashboard](https://github.com/eclipse-che/che-dashboard) and support all DevWorkspace samples out of the box.
+
+The `registry.json` has been completely reworked to serve as a proof-of-concept AI tool registry for the dashboard integration in [eclipse-che/che-dashboard#1505](https://github.com/eclipse-che/che-dashboard/pull/1505).
+
 ## Images
 
 | Tool | Pattern | Image |
