@@ -212,15 +212,12 @@ When no ConfigMap is found, the dashboard returns an empty registry and all AI-r
 
 ### Verifying
 
-Check the current registry served by the dashboard:
+Check the current registry served by the dashboard by querying the pod directly (bypasses OAuth):
 
 ```bash
-# Get the Che route
-CHE_HOST=$(oc get route che -n "${CHE_NAMESPACE:-eclipse-che}" -o jsonpath='{.spec.host}')
-
-# Fetch the registry (requires a valid auth token)
-curl -sk "https://$CHE_HOST/dashboard/api/ai-registry" \
-  -H "Authorization: Bearer $(oc whoami -t)" | jq .
+NS="${CHE_NAMESPACE:-eclipse-che}"
+POD=$(oc get pods -n "$NS" -l app.kubernetes.io/component=che-dashboard -o jsonpath='{.items[0].metadata.name}')
+oc exec -n "$NS" "$POD" -- wget -qO- http://localhost:8080/dashboard/api/ai-registry | jq .
 ```
 
 ---
