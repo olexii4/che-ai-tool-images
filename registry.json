@@ -6,7 +6,8 @@
       "publisher": "Google",
       "description": "Google Gemini AI assistant for the terminal — chat, code generation, and agentic workflows.",
       "docsUrl": "https://ai.google.dev/gemini-api/docs/quickstart",
-      "icon": "https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/geminicli.svg"
+      "icon": "https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/geminicli.svg",
+      "tags": ["Tech-Preview"]
     },
     {
       "id": "anthropic/claude",
@@ -14,7 +15,8 @@
       "publisher": "Anthropic",
       "description": "Anthropic Claude AI coding assistant for terminal — autonomous coding, debugging, and codebase exploration.",
       "docsUrl": "https://docs.anthropic.com/claude/reference/getting-started-with-the-api",
-      "icon": "https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/claudecode-color.svg"
+      "icon": "https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/claudecode-color.svg",
+      "tags": ["Tech-Preview"]
     },
     {
       "id": "opencodeai/opencode",
@@ -22,7 +24,8 @@
       "publisher": "opencode.ai",
       "description": "Open-source terminal AI coding agent supporting 75+ LLM providers including Claude, GPT, Gemini, and local models.",
       "docsUrl": "https://opencode.ai",
-      "icon": "https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/opencode.svg"
+      "icon": "https://cdn.jsdelivr.net/npm/@lobehub/icons-static-svg@latest/icons/opencode.svg",
+      "tags": ["Tech-Preview"]
     }
   ],
   "tools": [
