@@ -43,4 +43,4 @@ exec "$SCRIPT_DIR/claude-bin" "$@"\n' > /usr/local/bin/claude && \
     chmod +x /usr/local/bin/claude
 
 LABEL org.opencontainers.image.description="Claude Code CLI tool for DevWorkspace injection" \
-      org.opencontainers.image.source="https://github.com/olexii4/che-ai-tool-images"
+      org.opencontainers.image.source="https://github.com/che-incubator/che-ai-tool-images.git"

@@ -46,4 +46,4 @@ exec "$SCRIPT_DIR/opencode-bin" "$@"\n' > /usr/local/bin/opencode && \
     chmod +x /usr/local/bin/opencode
 
 LABEL org.opencontainers.image.description="Opencode CLI tool for DevWorkspace injection" \
-      org.opencontainers.image.source="https://github.com/olexii4/che-ai-tool-images"
+      org.opencontainers.image.source="https://github.com/che-incubator/che-ai-tool-images.git"

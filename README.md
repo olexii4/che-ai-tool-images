@@ -6,15 +6,13 @@ UBI10-based init container images that inject AI CLI tools into Eclipse Che DevW
 
 The original idea of injecting CLI tools into DevWorkspaces via init containers comes from [akurinnoy/tools-injector](https://github.com/akurinnoy/tools-injector.git). The Dockerfiles in this repository are simplified and modified versions of that approach, adapted to work with the [che-dashboard](https://github.com/eclipse-che/che-dashboard) and support all DevWorkspace samples out of the box.
 
-The `registry.json` has been completely reworked to serve as a proof-of-concept AI tool registry for the dashboard integration in [eclipse-che/che-dashboard#1505](https://github.com/eclipse-che/che-dashboard/pull/1505).
-
 ## Images
 
 | Tool | Pattern | Image |
 |------|---------|-------|
-| [Claude Code](https://claude.ai/code) | init | `quay.io/oorel/claude-code:next` |
-| [Gemini CLI](https://github.com/google-gemini/gemini-cli) | bundle | `quay.io/oorel/gemini-cli:next` |
-| [OpenCode](https://opencode.ai) | init | `quay.io/oorel/opencode:next` |
+| [Claude Code](https://claude.ai/code) | init | `quay.io/che-incubator/claude-code:next` |
+| [Gemini CLI](https://github.com/google-gemini/gemini-cli) | bundle | `quay.io/che-incubator/gemini-cli:next` |
+| [OpenCode](https://opencode.ai) | init | `quay.io/che-incubator/opencode:next` |
 
 All images are built for `linux/amd64` and `linux/arm64`.
 
@@ -31,7 +29,7 @@ components:
       size: 256Mi
   - name: claude-code-injector
     container:
-      image: quay.io/oorel/claude-code:next
+      image: quay.io/che-incubator/claude-code:next
       command: ["/bin/cp"]
       args: ["/usr/local/bin/claude", "/injected-tools/claude"]
       memoryLimit: 128Mi
@@ -61,7 +59,7 @@ components:
       size: 256Mi
   - name: gemini-cli-injector
     container:
-      image: quay.io/oorel/gemini-cli:next
+      image: quay.io/che-incubator/gemini-cli:next
       command: ["/bin/sh"]
       args: ["-c", "cp -a /opt/gemini-cli/. /injected-tools/gemini-cli/"]
       memoryLimit: 256Mi
@@ -91,7 +89,7 @@ components:
       size: 256Mi
   - name: opencode-injector
     container:
-      image: quay.io/oorel/opencode:next
+      image: quay.io/che-incubator/opencode:next
       command: ["/bin/cp"]
       args: ["/usr/local/bin/opencode", "/injected-tools/opencode"]
       memoryLimit: 128Mi
@@ -192,7 +190,7 @@ Edit `registry.json` before applying. For example, to offer only Claude Code:
       "url": "https://claude.ai/code",
       "binary": "claude",
       "pattern": "init",
-      "injectorImage": "quay.io/oorel/claude-code:next",
+      "injectorImage": "quay.io/che-incubator/claude-code:next",
       "envVarName": "ANTHROPIC_API_KEY"
     }
   ],

@@ -20,7 +20,7 @@ on:
       - main
 
 env:
-  REGISTRY: quay.io/oorel
+  REGISTRY: quay.io/che-incubator
   IMAGE_VERSION: next
 
 jobs:

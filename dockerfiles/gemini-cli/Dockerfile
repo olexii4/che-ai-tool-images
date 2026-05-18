@@ -46,4 +46,4 @@ exec "$SCRIPT_DIR/gemini-bin" "$@"\n' > /opt/gemini-cli/bin/gemini && \
     chmod +x /opt/gemini-cli/bin/gemini
 
 LABEL org.opencontainers.image.description="Gemini CLI init container for DevWorkspace injection" \
-      org.opencontainers.image.source="https://github.com/olexii4/che-ai-tool-images"
+      org.opencontainers.image.source="https://github.com/che-incubator/che-ai-tool-images.git"
